@@ -9,8 +9,8 @@
     {% csrf_token %}
 
     <div class="form-group keypad">
-        <label for="card_number">Card Number:</label>
-        <input type="text" class="form-control" id="card_number" name="card_number">
+        <label for="pin">Card Number:</label>
+        <input type="text" class="form-control" id="pin" name="pin">
     </div>
     <div>
         <table class="keypad">

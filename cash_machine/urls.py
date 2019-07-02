@@ -7,4 +7,5 @@ urlpatterns = [
     path('pin', views.pin, name='pin'),
     path('transaction', views.transaction, name='transaction'),
     path('balance', views.balance, name='balance'),
+    path('withdraw', views.withdraw, name='withdraw'),
 ]

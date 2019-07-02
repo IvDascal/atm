@@ -44,3 +44,7 @@ def balance(request):
     card_id = request.session.get('card_id')
     card = CardAccount.objects.get(pk=card_id)
     return render(request, 'cash_machine/balance.tpl', {'card': card})
+
+
+def withdraw(request):
+    return render(request, 'cash_machine/withdraw.tpl')

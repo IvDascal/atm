@@ -1,0 +1,21 @@
+.keypad {
+    margin: 10px auto;
+    padding: 0;
+    width: 300px;
+}
+
+.keypad .key-row {
+    width: 100%
+}
+
+.keypad .key-row .key-cell {
+    padding: 2px;
+    width: 30%;
+}
+
+.keypad .key-row .key-cell button.key {
+    font-size: medium;
+    font-weight: bold;
+    height: 70px;
+    width: 100%;
+}

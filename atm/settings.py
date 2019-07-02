@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_jinja',
+
+    'atm',
+    'cash_machine',
+
 ]
 
 MIDDLEWARE = [
@@ -52,6 +58,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'atm.urls'
 
 TEMPLATES = [
+    {
+        'BACKEND': 'django_jinja.backend.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'match_extension': '.tpl',
+            "app_dirname": "templates",
+        },
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],

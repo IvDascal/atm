@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from cash_machine.models import CardAccount, Transaction
+
+admin.site.register(CardAccount)
+admin.site.register(Transaction)

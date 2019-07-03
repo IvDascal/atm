@@ -11,12 +11,22 @@ def index(request):
     if request.method == 'POST':
         card_number = request.POST.get('card_number')
         card_number = card_number.replace('-', '')
-        # TODO try/except existing card redirect to error page
-        # TODO check is_blocked
-        card = CardAccount.objects.get(card_number=card_number)
-        request.session['card_id'] = card.pk
 
-        return redirect('pin')
+        try:
+            card = CardAccount.objects.get(card_number=card_number)
+        except:
+            card = None
+
+        if not card:
+            request.session['error_msg'] = 'Card does not exist'
+            return redirect('error')
+
+        if card.is_blocked:
+            request.session['error_msg'] = 'Your card is blocked'
+            return redirect('error')
+        else:
+            request.session['card_id'] = card.pk
+            return redirect('pin')
     else:
         return render(request, 'cash_machine/index.tpl', context)
 
@@ -34,7 +44,7 @@ def pin(request):
 
         if int(card_pin) == card.pin:
             return redirect('transaction')
-            # else redirect to error page
+            # TODO else redirect to error page
 
     return render(request, 'cash_machine/pin.tpl', context)
 
@@ -51,3 +61,8 @@ def balance(request):
 
 def withdraw(request):
     return render(request, 'cash_machine/withdraw.tpl')
+
+
+def error(request):
+    error_msg = request.session.get('error_msg')
+    return render(request, 'cash_machine/error.tpl', {'error_message': error_msg})

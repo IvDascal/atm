@@ -1,6 +1,8 @@
+import datetime
+
 from django.shortcuts import render, redirect
 
-from cash_machine.models import CardAccount
+from cash_machine.models import CardAccount, Transaction
 
 
 def index(request):
@@ -60,7 +62,13 @@ def transaction(request):
 def balance(request):
     card_id = request.session.get('card_id')
     card = CardAccount.objects.get(pk=card_id)
-    return render(request, 'cash_machine/balance.tpl', {'card': card})
+    today = datetime.date.today()
+    operation = Transaction()
+    operation.card = card
+    operation.operation_code = Transaction.BALANCE
+    operation.save()
+
+    return render(request, 'cash_machine/balance.tpl', {'card': card, 'today': today})
 
 
 def withdraw(request):

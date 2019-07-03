@@ -19,11 +19,14 @@ class Transaction(AbstractModel):
     class Meta(AbstractModel.Meta):
         db_table = 'transaction'
 
+    BALANCE = 1
+    WITHDRAW = 2
+
     OPERATION_CODE_CHOICES = [
-        (1, 'Balance'),
-        (2, 'Withdraw'),
+        (BALANCE, 'Balance'),
+        (WITHDRAW, 'Withdraw'),
     ]
 
     card = models.ForeignKey(CardAccount, null=False, blank=False, on_delete=models.PROTECT)
     operation_code = models.PositiveSmallIntegerField(null=False, blank=False, choices=OPERATION_CODE_CHOICES)
-    withdraw_amount = models.IntegerField()
+    withdraw_amount = models.IntegerField(null=True, blank=True)

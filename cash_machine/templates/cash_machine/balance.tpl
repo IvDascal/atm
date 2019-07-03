@@ -11,8 +11,8 @@
 
     </div>
     <div>
-        <a class="btn btn-warning" href="balance" role="button">Назад</a>
-        <a class="btn btn-danger" href="withdraw" role="button">Выход</a>
+        <a class="btn btn-warning" href="transaction" role="button">Назад</a>
+        <a class="btn btn-danger" href="/" role="button">Выход</a>
     </div>
 
 {% endblock%}

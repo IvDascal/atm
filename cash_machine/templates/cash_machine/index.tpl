@@ -1,5 +1,8 @@
 {% extends 'atm/base.tpl' %}
 
+{% block styles %}
+    <link href="{{ static('cash_machine/keypad.css') }}" type="text/css" rel="stylesheet">
+{% endblock %}
 
 
 {% block content %}
@@ -10,3 +13,7 @@
     </div>
 </form>
 {% endblock%}
+
+{% block scripts %}
+    <script src="{{ static('cash_machine/keypad.js')}}"></script>
+{% endblock %}

@@ -10,6 +10,9 @@ def index(request):
 
     if request.method == 'POST':
         card_number = request.POST.get('card_number')
+        card_number = card_number.replace('-', '')
+        # TODO try/except existing card redirect to error page
+        # TODO check is_blocked
         card = CardAccount.objects.get(card_number=card_number)
         request.session['card_id'] = card.pk
 

@@ -4,10 +4,6 @@ from cash_machine.models import CardAccount
 
 
 def index(request):
-    context = {
-        'input_type': 'card_number'
-    }
-
     if request.method == 'POST':
         card_number = request.POST.get('card_number')
         card_number = card_number.replace('-', '')
@@ -28,14 +24,10 @@ def index(request):
             request.session['card_id'] = card.pk
             return redirect('pin')
     else:
-        return render(request, 'cash_machine/index.tpl', context)
+        return render(request, 'cash_machine/index.tpl')
 
 
 def pin(request):
-    context = {
-        'input_type': 'pin'
-    }
-
     if request.method == 'POST':
         card_pin = request.POST.get('pin')
         card_id = request.session.get('card_id')
@@ -44,9 +36,21 @@ def pin(request):
 
         if int(card_pin) == card.pin:
             return redirect('transaction')
-            # TODO else redirect to error page
 
-    return render(request, 'cash_machine/pin.tpl', context)
+        elif card.wrong_pin_counter < 3:
+            card.wrong_pin_counter += 1
+            card.save()
+
+            remaining_attempts = 4 - card.wrong_pin_counter
+            error_msg = 'Неправильный PIN. Осталось попыток: {} '.format(remaining_attempts)
+
+            return render(request, 'cash_machine/pin.tpl', {'error_msg': error_msg})
+
+        else:
+            request.session['error_msg'] = 'Your card is blocked because of wrong pin'
+            return redirect('error')
+
+    return render(request, 'cash_machine/pin.tpl')
 
 
 def transaction(request):

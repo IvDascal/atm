@@ -8,6 +8,11 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
+
+    <div class="form-group keypad">
+        <label for="card_number">Card Number:</label>
+        <input type="text" class="form-control card_num" id="card_number" name="card_number">
+    </div>
     <div>
         {% include 'cash_machine/keypad.tpl' %}
     </div>
@@ -15,5 +20,5 @@
 {% endblock%}
 
 {% block scripts %}
-    <script src="{{ static('cash_machine/keypad.js')}}"></script>
+    <script src="{{ static('cash_machine/card_num.js')}}"></script>
 {% endblock %}

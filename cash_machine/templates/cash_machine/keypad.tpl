@@ -1,7 +1,3 @@
-<div class="form-group keypad">
-    <label for="{{ input_type }}">Card Number:</label>
-    <input type="text" class="form-control num" id="{{ input_type }}" name="{{ input_type }}">
-</div>
 <div>
     <table class="keypad">
         <tr class="key-row">

@@ -14,6 +14,9 @@ class CardAccount(AbstractModel):
     wrong_pin_counter = models.IntegerField(default=0)
     is_blocked = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.card_number}'
+
 
 class Transaction(AbstractModel):
     class Meta(AbstractModel.Meta):
@@ -30,3 +33,6 @@ class Transaction(AbstractModel):
     card = models.ForeignKey(CardAccount, null=False, blank=False, on_delete=models.PROTECT)
     operation_code = models.PositiveSmallIntegerField(null=False, blank=False, choices=OPERATION_CODE_CHOICES)
     withdraw_amount = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.card.card_number} -- {self.operation_code} -- {self.withdraw_amount}'

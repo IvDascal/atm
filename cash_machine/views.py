@@ -16,11 +16,11 @@ def index(request):
             card = None
 
         if not card:
-            request.session['error_msg'] = 'Неверный номер карты'
+            request.session['error'] = {'error_msg': 'Неверный номер карты', 'error_back': '/'}
             return redirect('error')
 
         if card.is_blocked:
-            request.session['error_msg'] = 'Ваша карта заблокирована'
+            request.session['error'] = {'error_msg': 'Ваша карта заблокирована', 'error_back': '/'}
             return redirect('error')
         else:
             request.session['card_id'] = card.pk
@@ -36,7 +36,7 @@ def pin(request):
 
         card = CardAccount.objects.get(pk=card_id)
 
-        if int(card_pin) == card.pin:
+        if card_pin and int(card_pin) == card.pin:
             return redirect('transaction')
 
         elif card.wrong_pin_counter < 3:
@@ -52,7 +52,7 @@ def pin(request):
             card.is_blocked = True
             card.save()
 
-            request.session['error_msg'] = 'Ваша карта заблокирована.'
+            request.session['error_msg'] = {'error_msg': 'Ваша карта заблокирована', 'error_back': '/'}
 
             return redirect('error')
 
@@ -78,6 +78,12 @@ def balance(request):
 def withdraw(request):
     if request.method == 'POST':
         amount = request.POST.get('amount')
+
+        if not amount:
+            request.session['error'] = {'error_msg': 'Необходимо ввести сумму', 'error_back': 'withdraw'}
+
+            return redirect('error')
+
         amount = int(amount)
         card_id = request.session.get('card_id')
         card = CardAccount.objects.get(pk=card_id)
@@ -97,7 +103,7 @@ def withdraw(request):
             return redirect('report')
 
         else:
-            request.session['error_msg'] = 'Недостаточно денежных средств на карте'
+            request.session['error'] = {'error_msg': 'Недостаточно денежных средств на карте', 'error_back': 'withdraw'}
 
             return redirect('error')
 
@@ -105,8 +111,8 @@ def withdraw(request):
 
 
 def error(request):
-    error_msg = request.session.get('error_msg')
-    return render(request, 'cash_machine/error.tpl', {'error_message': error_msg})
+    error_dict = request.session.get('error')
+    return render(request, 'cash_machine/error.tpl', {'error': error_dict})
 
 
 def report(request):

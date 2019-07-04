@@ -92,7 +92,10 @@ def withdraw(request):
             card.balance -= amount
             card.save()
 
+            request.session['transaction_id'] = operation.pk
+
             return redirect('report')
+
         else:
             request.session['error_msg'] = 'Not enough money on the card'
 
@@ -104,3 +107,10 @@ def withdraw(request):
 def error(request):
     error_msg = request.session.get('error_msg')
     return render(request, 'cash_machine/error.tpl', {'error_message': error_msg})
+
+
+def report(request):
+    transaction_id = request.session.get('transaction_id')
+    operation = Transaction.objects.get(pk=transaction_id)
+
+    return render(request, 'cash_machine/report.tpl', {'transaction': operation})

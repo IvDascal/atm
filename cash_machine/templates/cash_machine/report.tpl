@@ -1,11 +1,11 @@
-{% extends 'atm/base.tpl' %}
+{% extends 'cash_machine/base.tpl' %}
 
 {% block content %}
     <div>
         <h1>Номер карты</h1>
         <p>{{ transaction.card.card_number }}</p>
         <h1>Дата</h1>
-        <p>{{ transaction.created }}</p>
+        <p>{{ transaction.created.strftime('%Y-%m-%d %H:%M')}}</p>
         <h1>Снятая сумма</h1>
         <p>{{ transaction.withdraw_amount }}</p>
         <h1>Остаток на счету</h1>

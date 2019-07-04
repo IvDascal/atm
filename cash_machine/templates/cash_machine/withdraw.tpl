@@ -1,7 +1,7 @@
-{% extends 'atm/base.tpl' %}
+{% extends 'cash_machine/base.tpl' %}
 
 {% block styles %}
-    <link href="{{ static('cash_machine/keypad.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ static('cash_machine/css/keypad.css') }}" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
     {% csrf_token %}
 
     <div class="form-group keypad">
-        <label for="amount">Enter amount:</label>
+        <label for="amount">Введите сумму:</label>
         <input type="text" class="form-control amount" id="amount" name="amount">
     </div>
 
@@ -20,5 +20,5 @@
 {% endblock%}
 
 {% block scripts %}
-    <script src="{{ static('cash_machine/withdraw.js')}}"></script>
+    <script src="{{ static('cash_machine/js/withdraw.js')}}"></script>
 {% endblock %}

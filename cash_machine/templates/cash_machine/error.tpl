@@ -1,4 +1,4 @@
-{% extends 'atm/base.tpl' %}
+{% extends 'cash_machine/base.tpl' %}
 
 {% block content %}
 

@@ -16,11 +16,11 @@ def index(request):
             card = None
 
         if not card:
-            request.session['error_msg'] = 'Card does not exist'
+            request.session['error_msg'] = 'Неверный номер карты'
             return redirect('error')
 
         if card.is_blocked:
-            request.session['error_msg'] = 'Your card is blocked'
+            request.session['error_msg'] = 'Ваша карта заблокирована'
             return redirect('error')
         else:
             request.session['card_id'] = card.pk
@@ -52,7 +52,7 @@ def pin(request):
             card.is_blocked = True
             card.save()
 
-            request.session['error_msg'] = 'Your card is blocked because of wrong pin'
+            request.session['error_msg'] = 'Ваша карта заблокирована.'
 
             return redirect('error')
 
@@ -97,7 +97,7 @@ def withdraw(request):
             return redirect('report')
 
         else:
-            request.session['error_msg'] = 'Not enough money on the card'
+            request.session['error_msg'] = 'Недостаточно денежных средств на карте'
 
             return redirect('error')
 

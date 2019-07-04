@@ -49,7 +49,11 @@ def pin(request):
             return render(request, 'cash_machine/pin.tpl', {'error_msg': error_msg})
 
         else:
+            card.is_blocked = True
+            card.save()
+
             request.session['error_msg'] = 'Your card is blocked because of wrong pin'
+
             return redirect('error')
 
     return render(request, 'cash_machine/pin.tpl')

@@ -76,6 +76,28 @@ def balance(request):
 
 
 def withdraw(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        amount = int(amount)
+        card_id = request.session.get('card_id')
+        card = CardAccount.objects.get(pk=card_id)
+
+        if amount <= card.balance:
+            operation = Transaction()
+            operation.card = card
+            operation.operation_code = Transaction.WITHDRAW
+            operation.withdraw_amount = amount
+            operation.save()
+
+            card.balance -= amount
+            card.save()
+
+            return redirect('report')
+        else:
+            request.session['error_msg'] = 'Not enough money on the card'
+
+            return redirect('error')
+
     return render(request, 'cash_machine/withdraw.tpl')
 
 

@@ -6,6 +6,15 @@ from cash_machine.models import CardAccount, Transaction
 
 
 def index(request):
+    """
+    View for start page: card number processing.
+
+    If card number exists and card is not blocked go to pin enter page.
+    Otherwise display error page.
+
+    Store card id into session.
+    """
+
     if request.method == 'POST':
         card_number = request.POST.get('card_number')
         card_number = card_number.replace('-', '')
@@ -30,6 +39,17 @@ def index(request):
 
 
 def pin(request):
+    """
+    View for pin processing.
+
+
+    If pin entered by user matches to card pin go to transaction page.
+    Otherwise display error page.
+
+    User has 4 attempts to enter pin.
+    After the 4th wrong attempt, the map is blocked and the error page is displayed.
+    """
+
     if request.method == 'POST':
         card_pin = request.POST.get('pin')
         card_id = request.session.get('card_id')
@@ -60,10 +80,22 @@ def pin(request):
 
 
 def transaction(request):
+    """
+    View for transaction.
+
+    User has 2 options:
+    1) show card balance
+    2) withdraw cash
+    """
     return render(request, 'cash_machine/transaction.tpl')
 
 
 def balance(request):
+    """
+    View to show card balance.
+
+    This operation is registered in transaction table.
+    """
     card_id = request.session.get('card_id')
     card = CardAccount.objects.get(pk=card_id)
     today = datetime.date.today()
@@ -76,6 +108,17 @@ def balance(request):
 
 
 def withdraw(request):
+    """
+    View for withdraw processing.
+
+
+    If the withdrawn amount is less than or equal to the balance on the card,
+    the balance on the card is reduced by this amount.
+
+    This operation is registered in transaction table and go to transaction report page.
+
+    Otherwise display error page.
+    """
     if request.method == 'POST':
         amount = request.POST.get('amount')
 
@@ -111,11 +154,17 @@ def withdraw(request):
 
 
 def error(request):
+    """
+    View to display error page.
+    """
     error_dict = request.session.get('error')
     return render(request, 'cash_machine/error.tpl', {'error': error_dict})
 
 
 def report(request):
+    """
+    View to display transaction report.
+    """
     transaction_id = request.session.get('transaction_id')
     operation = Transaction.objects.get(pk=transaction_id)
 
